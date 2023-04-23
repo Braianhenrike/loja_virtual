@@ -15,30 +15,29 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+
 @Entity
-@Table(name = "avaliacao_produto")
-@SequenceGenerator(name = "seq_avaliacao_produto", sequenceName = "seq_avaliacao_produto", allocationSize = 1, initialValue = 1)
-public class AvaliacaoProduto implements Serializable{
+@Table(name = "nota_item_produto")
+@SequenceGenerator(name = "seq_nota_item_produto", sequenceName = "seq_nota_item_produto", allocationSize = 1, initialValue = 1)
+public class NotaItemProduto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_avaliacao_produto")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_nota_item_produto")
 	private Long id;
 	
 	@Column(nullable = false)
-	private Integer nota;
-
-	@Column(nullable = false)
-	private String Descricao;
-	
-	@ManyToOne(targetEntity = Pessoa.class)
-	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
-	private Pessoa pessoa;
+	private Double Quantidade;
 	
 	@ManyToOne
-	@JoinColumn(name = "produto_id", nullable = false, foreignKey = 
-	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "produto_fk"))
+	@JoinColumn(name = "nota_fical_compra_id", nullable = false, foreignKey = 
+	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "nota_fical_compra_fk"))
+	private NotaFiscalCompra notaFiscalCompra;
+
+	@ManyToOne
+	@JoinColumn(name = "prodtuo_id", nullable = false, foreignKey = 
+	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "prodtuo_fk"))
 	private Produto produto;
 
 	public Long getId() {
@@ -49,28 +48,20 @@ public class AvaliacaoProduto implements Serializable{
 		this.id = id;
 	}
 
-	public Integer getNota() {
-		return nota;
+	public Double getQuantidade() {
+		return Quantidade;
 	}
 
-	public void setNota(Integer nota) {
-		this.nota = nota;
-	}
-	
-	public void setDescricao(String descricao) {
-		Descricao = descricao;
-	}
-	
-	public String getDescricao() {
-		return Descricao;
+	public void setQuantidade(Double quantidade) {
+		Quantidade = quantidade;
 	}
 
-	public Pessoa getPessoa() {
-		return pessoa;
+	public NotaFiscalCompra getNotaFiscalCompra() {
+		return notaFiscalCompra;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
+	public void setNotaFiscalCompra(NotaFiscalCompra notaFiscalCompra) {
+		this.notaFiscalCompra = notaFiscalCompra;
 	}
 
 	public Produto getProduto() {
@@ -94,9 +85,10 @@ public class AvaliacaoProduto implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AvaliacaoProduto other = (AvaliacaoProduto) obj;
+		NotaItemProduto other = (NotaItemProduto) obj;
 		return Objects.equals(id, other.id);
 	}
+ 
 
 	
 }

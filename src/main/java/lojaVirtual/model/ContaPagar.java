@@ -20,25 +20,30 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import lojaVirtual.enums.StatusContaReceber;
+import lojaVirtual.enums.StatusContaPagar;
 
 @Entity
-@Table(name = "conta_receber")
-@SequenceGenerator(name = "seq_conta_receber", sequenceName = "seq_conta_receber", allocationSize = 1, initialValue = 1)
-public class ContaReceber implements Serializable {
+@Table(name = "conta_pagar")
+@SequenceGenerator(name = "seq_conta_pagar", sequenceName = "seq_conta_pagar", allocationSize = 1, initialValue = 1)
+public class ContaPagar implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_conta_receber")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_conta_pagar")
 	private Long id;
 
 	@Column(nullable = false)
 	private String descricao;
 
 	@Column(nullable = false)
+	private BigDecimal valorTotal;
+
+	private BigDecimal valorDesconto;
+
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private StatusContaReceber status;
+	private StatusContaPagar status;
 
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
@@ -47,14 +52,14 @@ public class ContaReceber implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date dtPagamento;
 
-	@Column(nullable = false)
-	private BigDecimal valorTotal;
-
-	private BigDecimal valorDesconto;
-
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
 	private Pessoa pessoa;
+
+	@ManyToOne(targetEntity = Pessoa.class)
+	@JoinColumn(name = "pessoa_forn_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_forn_fk"))
+	private Pessoa pessoa_forncedor;
+
 
 	public Long getId() {
 		return id;
@@ -72,11 +77,11 @@ public class ContaReceber implements Serializable {
 		this.descricao = descricao;
 	}
 
-	public StatusContaReceber getStatus() {
+	public StatusContaPagar getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusContaReceber status) {
+	public void setStatus(StatusContaPagar status) {
 		this.status = status;
 	}
 
@@ -119,6 +124,14 @@ public class ContaReceber implements Serializable {
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
+	
+	public Pessoa getPessoa_forncedor() {
+		return pessoa_forncedor;
+	}
+
+	public void setPessoa_forncedor(Pessoa pessoa_forncedor) {
+		this.pessoa_forncedor = pessoa_forncedor;
+	}
 
 	@Override
 	public int hashCode() {
@@ -133,10 +146,8 @@ public class ContaReceber implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ContaReceber other = (ContaReceber) obj;
+		ContaPagar other = (ContaPagar) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 
 }

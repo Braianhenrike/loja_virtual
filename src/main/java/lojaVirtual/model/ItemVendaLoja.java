@@ -16,75 +16,76 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "avaliacao_produto")
-@SequenceGenerator(name = "seq_avaliacao_produto", sequenceName = "seq_avaliacao_produto", allocationSize = 1, initialValue = 1)
-public class AvaliacaoProduto implements Serializable{
+@Table(name = "item_venda_loja")
+@SequenceGenerator(name = "seq_item_venda_loja", sequenceName = "seq_item_venda_loja", allocationSize = 1, initialValue = 1)
+public class ItemVendaLoja implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_avaliacao_produto")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_item_venda_loja")
 	private Long id;
-	
-	@Column(nullable = false)
-	private Integer nota;
 
 	@Column(nullable = false)
-	private String Descricao;
-	
-	@ManyToOne(targetEntity = Pessoa.class)
-	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
-	private Pessoa pessoa;
-	
+	private Double quantidade;
+
 	@ManyToOne
 	@JoinColumn(name = "produto_id", nullable = false, foreignKey = 
 	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "produto_fk"))
 	private Produto produto;
+	
+
+	@ManyToOne
+	@JoinColumn(name = "vd_cp_loja_virt_id", nullable = false, foreignKey = 
+	@ForeignKey(value = ConstraintMode.CONSTRAINT, name = "vd_cp_loja_virt_fk"))
+	private VendaCompraLojaVirtual vendaCompraLojaVirtual;
+
 
 	public Long getId() {
 		return id;
 	}
 
+
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Integer getNota() {
-		return nota;
+
+	public Double getQuantidade() {
+		return quantidade;
 	}
 
-	public void setNota(Integer nota) {
-		this.nota = nota;
-	}
-	
-	public void setDescricao(String descricao) {
-		Descricao = descricao;
-	}
-	
-	public String getDescricao() {
-		return Descricao;
+
+	public void setQuantidade(Double quantidade) {
+		this.quantidade = quantidade;
 	}
 
-	public Pessoa getPessoa() {
-		return pessoa;
-	}
-
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
-	}
 
 	public Produto getProduto() {
 		return produto;
 	}
 
+
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
+
+
+	public VendaCompraLojaVirtual getVendaCompraLojaVirtual() {
+		return vendaCompraLojaVirtual;
+	}
+
+
+	public void setVendaCompraLojaVirtual(VendaCompraLojaVirtual vendaCompraLojaVirtual) {
+		this.vendaCompraLojaVirtual = vendaCompraLojaVirtual;
+	}
+
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -94,9 +95,10 @@ public class AvaliacaoProduto implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AvaliacaoProduto other = (AvaliacaoProduto) obj;
+		ItemVendaLoja other = (ItemVendaLoja) obj;
 		return Objects.equals(id, other.id);
 	}
-
 	
+	
+
 }
